@@ -29,9 +29,9 @@
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@language/*": ["src/locale/*"],
-      "@utils/*": ["src/utils/*"]
-    }
+      "@utils/*": ["src/utils/*"],
+    },
   },
   "include": ["src", "../i18n.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
 }

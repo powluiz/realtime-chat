@@ -1,5 +1,7 @@
+import { Chat } from './components'
+
 const App = () => {
-  return <h1>Real-Time Chat</h1>
+  return <Chat />
 }
 
 export default App

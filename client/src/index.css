@@ -3,17 +3,26 @@
 @tailwind utilities;
 
 @layer base {
-  * {
+  *,
+  *:after,
+  *:before {
     margin: 0;
     padding: 0;
-    border: none;
+    border: 0;
     box-sizing: border-box;
+    text-decoration: none;
   }
 
-  :root {
+  body {
+    font-size: 100%;
+    list-style-type: none;
+    font: inherit;
+    letter-spacing: -0.025em;
+    font-smooth: always;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    @apply font-SF;
   }
 }
