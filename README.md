@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Real-time Chat Application built with React, Node.js, Express, and Socket.io</h1>
+<h1>Real-time Chat Application built with React, Node.js, Express, and WebSockets</h1>
   <!-- <a href="https://choosealicense.com/licenses/mit/">
     <img src="https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge"/ >
   </a> -->
