@@ -1,14 +1,16 @@
 import { Button } from '@/components'
 import defaultBackground from '@assets/default_background_green.jpg'
 import { FormikValues, useFormik } from 'formik'
+import { Link } from 'react-router-dom'
 import * as yup from 'yup'
 
 const loginSchema = yup.object().shape({
+  name: yup.string().required(),
   email: yup.string().email().required(),
   password: yup.string().required(),
 })
 
-const Login = () => {
+const Register = () => {
   const backgroundImage = defaultBackground
   const handleSubmit = (values: FormikValues) => {
     console.log(values)
@@ -16,6 +18,7 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
+      name: '',
       email: '',
       password: '',
     },
@@ -48,11 +51,31 @@ const Login = () => {
       >
         <div className="mb-4 flex flex-col gap-1">
           <h1 className="text-center text-3xl font-extrabold text-emerald-500">
-            Login to Your Account
+            Create Your Account
           </h1>
           <h1 className="text-center text-base font-medium text-slate-600">
-            Complete the fields below to login
+            Complete the fields below to register
           </h1>
+        </div>
+        <div className="flex w-full flex-col gap-2">
+          <label
+            htmlFor="name"
+            data-error={formik?.touched?.name && formik?.errors?.name}
+            className="form-label data-[error]:text-error-base"
+          >
+            Username
+          </label>
+          <input
+            data-error={formik?.touched?.name && formik?.errors?.name}
+            className="form-input data-[error]:ring-1 data-[error]:ring-error-base"
+            id="name"
+            name="name"
+            placeholder="Enter your name"
+            type="name"
+            onChange={formik?.handleChange}
+            onBlur={formik?.handleBlur}
+            value={formik?.values.name}
+          />
         </div>
 
         <div className="flex w-full flex-col gap-2">
@@ -65,7 +88,7 @@ const Login = () => {
           </label>
           <input
             data-error={formik?.touched?.email && formik?.errors?.email}
-            className="form-input data-[error]:ring-error-base data-[error]:ring-1"
+            className="form-input data-[error]:ring-1 data-[error]:ring-error-base"
             id="email"
             name="email"
             placeholder="Enter your email address"
@@ -74,9 +97,6 @@ const Login = () => {
             onBlur={formik?.handleBlur}
             value={formik?.values.email}
           />
-          {formik?.touched?.email && formik?.errors?.email && (
-            <h3 className="form-error">Enter a valid email address</h3>
-          )}
         </div>
 
         <div className="flex w-full flex-col gap-2">
@@ -89,7 +109,7 @@ const Login = () => {
           </label>
           <input
             data-error={formik?.touched?.password && formik?.errors?.password}
-            className="form-input data-[error]:ring-error-base data-[error]:ring-1"
+            className="form-input data-[error]:ring-1 data-[error]:ring-error-base"
             id="password"
             name="password"
             placeholder="Enter your password"
@@ -104,24 +124,26 @@ const Login = () => {
           className="mt-3 w-full rounded-lg bg-emerald-500 px-8 py-3 text-white hover:bg-emerald-700 active:bg-emerald-600 data-[disabled=true]:bg-emerald-100"
           disabled={isButtonDisabled}
         >
-          <h3 className="text-base">Login</h3>
+          <h3 className="text-base">Register</h3>
         </Button>
 
         <div className="mt-6 flex flex-col gap-3">
           <h1 className="text-center text-sm font-medium text-slate-600">
-            {"Don't have an account yet?"}
+            Already have an account?
           </h1>
 
-          <Button
-            type="button"
-            className="w-full rounded-lg bg-slate-300 px-8 py-3 text-white hover:bg-emerald-700 active:bg-emerald-600"
-          >
-            <h3 className="text-base text-white">Register</h3>
-          </Button>
+          <Link to="/login">
+            <Button
+              type="button"
+              className="w-full rounded-lg bg-slate-300 px-8 py-3 text-white hover:bg-emerald-700 active:bg-emerald-600"
+            >
+              <h3 className="text-base text-white">Go to Login Page</h3>
+            </Button>
+          </Link>
         </div>
       </form>
     </div>
   )
 }
 
-export default Login
+export default Register

@@ -2,7 +2,7 @@ import { Chat } from '@/components'
 
 const Home = () => {
   return (
-    <div className="h-dvh w-dvw bg-red-400">
+    <div className="h-dvh w-dvw">
       <Chat />
     </div>
   )
