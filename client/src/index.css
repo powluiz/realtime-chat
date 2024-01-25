@@ -25,4 +25,15 @@
     -moz-osx-font-smoothing: grayscale;
     @apply font-SF;
   }
+
+  .form-label {
+    @apply flex py-1 text-sm font-medium;
+  }
+
+  .form-input {
+    @apply w-full rounded-md border border-transparent bg-slate-100 px-4 py-3 text-base font-normal text-slate-900 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary-dark;
+  }
+  .form-error {
+    @apply text-error-base text-sm;
+  }
 }

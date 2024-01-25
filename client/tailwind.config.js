@@ -24,6 +24,11 @@ export const colors = {
     dark: '#686A8A',
     darker: '#303030',
   },
+  error: {
+    dark: '#BB2929',
+    base: '#E03939',
+    light: '#FB7171',
+  },
 }
 
 export default {
