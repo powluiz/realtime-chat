@@ -39,7 +39,7 @@ const Chat = () => {
   ]
 
   return (
-    <div id="chat-window" className="flex h-svh max-h-svh flex-col">
+    <div id="chat-window" className="flex h-full flex-col">
       <div
         id="chat-header"
         className="flex h-fit w-full flex-row items-center justify-between bg-white px-3 py-4 drop-shadow-sm"
