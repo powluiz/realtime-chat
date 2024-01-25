@@ -1,9 +1,11 @@
 import { BsEmojiSmile, BsThreeDotsVertical } from 'react-icons/bs'
 import { LuChevronLeft } from 'react-icons/lu'
+import defaultBackground from '@assets/default_background.jpg'
 
 import { Button, MessageBubble } from '..'
 
 const Chat = () => {
+  const backgroundImage = defaultBackground
   const messages = [
     {
       id: 1,
@@ -60,7 +62,18 @@ const Chat = () => {
         </Button>
       </div>
 
-      <div className="chat-content-wrapper flex w-full flex-1 justify-center overflow-auto bg-gray-100">
+      <div
+        className="chat-content-wrapper flex w-full flex-1 justify-center overflow-auto bg-gray-100"
+        style={
+          backgroundImage
+            ? {
+                background: `url(${backgroundImage})`,
+                backgroundRepeat: 'repeat',
+                backgroundSize: '100vh',
+              }
+            : {}
+        }
+      >
         <div
           id="chat-content"
           className="flex h-fit w-full max-w-[62rem] flex-col px-4 py-6"
