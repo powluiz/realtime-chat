@@ -1,13 +1,8 @@
 import { Button } from '@/components'
+import { loginSchema } from '@/schemas'
 import defaultBackground from '@assets/default_background_green.jpg'
 import { FormikValues, useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
-import * as yup from 'yup'
-
-const loginSchema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().required(),
-})
 
 const Login = () => {
   const backgroundImage = defaultBackground
