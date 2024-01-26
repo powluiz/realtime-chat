@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 
 export class AuthController {
   async authenticate(req: Request, res: Response) {
@@ -11,18 +11,20 @@ export class AuthController {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      return res.json({ error: "User not found" });
+      return res.status(400).json({ error: "User not found" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user?.password);
 
     if (!isPasswordValid) {
-      return res.json({ error: "Invalid password" });
+      return res.status(400).json({ error: "Invalid password" });
     }
 
-    const accessToken = jwt.sign({ id: user.id }, jwtSecret, {
+    const accessToken = sign({ id: user.id }, jwtSecret, {
       expiresIn: "1d",
     });
-    return res.json({ user, accessToken });
+
+    const { id } = user;
+    return res.json({ user: { id }, accessToken });
   }
 }
