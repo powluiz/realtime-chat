@@ -24,7 +24,6 @@ export class AuthController {
       expiresIn: "1d",
     });
 
-    const { id } = user;
-    return res.json({ user: { id }, accessToken });
+    return res.json({ accessToken });
   }
 }
