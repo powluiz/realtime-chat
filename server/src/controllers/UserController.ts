@@ -8,12 +8,17 @@ export class UserController {
     return res.json(users);
   }
 
-  async store(req: Request, res: Response) {
+  async register(req: Request, res: Response) {
     const { name, email, password } = req.body;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
+
     if (!!existingUser) {
-      return res.json({ error: "User already exists!" });
+      return res.status(400).json({ error: "User already exists!" });
+    }
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "Missing fields!" });
     }
 
     const hashPassword = await bcrypt.hash(password, 8);
@@ -25,6 +30,12 @@ export class UserController {
       },
     });
 
-    return res.json(user);
+    const userData = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+
+    return res.status(200).json(userData);
   }
 }
