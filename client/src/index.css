@@ -34,6 +34,53 @@
     @apply w-full rounded-md border border-transparent bg-slate-100 px-4 py-3 text-base font-normal text-slate-900 focus:border-transparent focus:outline-none focus:ring-1 focus:ring-primary-dark;
   }
   .form-error {
-    @apply text-error-base text-sm;
+    @apply text-sm text-error-base;
+  }
+}
+
+@layer utilities {
+  .loader {
+    width: 48px;
+    height: 6px;
+    display: block;
+    margin: auto;
+    position: relative;
+    border-radius: 4px;
+    color: #a8c3b0;
+    box-sizing: border-box;
+    animation: animloader 0.75s linear infinite;
+  }
+
+  @keyframes animloader {
+    0% {
+      box-shadow:
+        -10px 20px,
+        10px 35px,
+        0px 50px;
+    }
+    25% {
+      box-shadow:
+        0px 20px,
+        0px 35px,
+        10px 50px;
+    }
+    50% {
+      box-shadow:
+        10px 20px,
+        -10px 35px,
+        0px 50px;
+    }
+    75% {
+      box-shadow:
+        0px 20px,
+        0px 35px,
+        -10px 50px;
+    }
+    100% {
+      box-shadow:
+        -10px 20px,
+        10px 35px,
+        0px 50px;
+    }
   }
 }
