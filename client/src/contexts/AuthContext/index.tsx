@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       handleLoginSuccess(data)
       setLoading(false)
     },
-    onError: () => {
-      // TODO: error toast
+    onError: error => {
+      handleLoginError(error)
       setLoading(false)
     },
   })
@@ -49,6 +49,12 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       setAuthenticated(true)
       localStorage.setItem(TOKEN_KEY, loginData?.accessToken)
       navigate('/')
+    }
+  }
+
+  const handleLoginError = error => {
+    if (error.request.status === 400) {
+      alert('Usuário ou senha inválidos.')
     }
   }
 

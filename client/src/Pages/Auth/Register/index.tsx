@@ -1,3 +1,4 @@
+import { useMutationPostRegister } from '@/api/hooks/useMutationPostRegister'
 import { Button } from '@/components'
 import { registerSchema } from '@/schemas'
 import defaultBackground from '@assets/default_background_green.jpg'
@@ -6,8 +7,31 @@ import { Link } from 'react-router-dom'
 
 const Register = () => {
   const backgroundImage = defaultBackground
-  const handleSubmit = (values: FormikValues) => {
-    console.log(values)
+
+  const { mutate: postRegister, isLoading: loadingRegistration } =
+    useMutationPostRegister({
+      onSuccess: () => {
+        handleRegisterSuccess()
+      },
+      onError: error => {
+        handleRegisterError(error)
+      },
+    })
+
+  const handleRegisterSuccess = () => {
+    alert('Registro realizado com sucesso. Faça login para entrar.')
+  }
+  const handleRegisterError = error => {
+    alert('erro durante o registro')
+    console.log(error)
+  }
+
+  const handleSubmit = async (values: FormikValues) => {
+    postRegister({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    })
   }
 
   const formik = useFormik({
@@ -23,7 +47,8 @@ const Register = () => {
   const isButtonDisabled =
     !formik?.dirty ||
     Object.keys(formik?.errors).length > 0 ||
-    formik?.isSubmitting
+    formik?.isSubmitting ||
+    loadingRegistration
 
   return (
     <div

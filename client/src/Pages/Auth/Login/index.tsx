@@ -115,7 +115,6 @@ const Login = () => {
           <Link to="/register">
             <Button
               type="button"
-              onClick={() => {}}
               className="w-full rounded-lg bg-slate-300 px-8 py-3 text-white hover:bg-emerald-700 active:bg-emerald-600"
             >
               <h3 className="text-base text-white">Go to Register Page</h3>
