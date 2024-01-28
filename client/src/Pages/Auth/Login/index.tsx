@@ -1,17 +1,18 @@
 import { Button } from '@/components'
+import { AuthContext } from '@/contexts/AuthContext'
 import { loginSchema } from '@/schemas'
 import defaultBackground from '@assets/default_background_green.jpg'
 import { FormikValues, useFormik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
   const backgroundImage = defaultBackground
 
-  const navigate = useNavigate()
+  const { handleLogin } = useContext(AuthContext)
 
   const handleSubmit = (values: FormikValues) => {
-    console.log(values)
-    navigate('/')
+    handleLogin(values.email, values.password)
   }
 
   const formik = useFormik({
