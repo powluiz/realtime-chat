@@ -6,12 +6,7 @@ export interface IPostLoginParams {
 }
 
 export interface IPostLoginResponse {
-  user: {
-    id: string
-    email: string
-    name: string
-    avatar: string
-  }
+  userId: string
   accessToken?: string
 }
 

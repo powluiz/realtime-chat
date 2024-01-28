@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom'
 
 import { IAuthContextData, IAuthProviderProps } from './types'
 
-export const TOKEN_KEY = 'accessToken'
+export const TOKEN_KEY = 'chatty_client_access_token'
+export const USER_KEY = 'chatty_client_user_id'
 
 export const AuthContext = createContext<IAuthContextData>({
   authenticated: false,
@@ -22,7 +23,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem(TOKEN_KEY)
-    if (accessToken !== null) {
+    const userId = localStorage.getItem(USER_KEY)
+
+    if (!!accessToken && !!userId) {
       setAuthenticated(true)
     }
     setLoading(false)
@@ -45,9 +48,10 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   }
 
   const handleLoginSuccess = (loginData: IPostLoginResponse) => {
-    if (loginData?.accessToken) {
-      setAuthenticated(true)
+    if (!!loginData?.accessToken && !!loginData?.userId) {
       localStorage.setItem(TOKEN_KEY, loginData?.accessToken)
+      localStorage.setItem(USER_KEY, loginData?.userId)
+      setAuthenticated(true)
       navigate('/')
     }
   }
@@ -61,6 +65,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   const handleLogout = () => {
     setAuthenticated(false)
     localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(USER_KEY)
     navigate('/login')
   }
 

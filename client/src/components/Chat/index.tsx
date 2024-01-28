@@ -1,10 +1,13 @@
+import { AuthContext } from '@/contexts/AuthContext'
+import defaultBackground from '@assets/default_background.jpg'
+import { useContext } from 'react'
 import { BsEmojiSmile, BsThreeDotsVertical } from 'react-icons/bs'
 import { LuChevronLeft } from 'react-icons/lu'
-import defaultBackground from '@assets/default_background.jpg'
 
 import { Button, MessageBubble } from '..'
 
 const Chat = () => {
+  const { handleLogout } = useContext(AuthContext)
   const backgroundImage = defaultBackground
   const messages = [
     {
@@ -45,7 +48,7 @@ const Chat = () => {
         className="flex h-fit w-full flex-row items-center justify-between bg-white px-3 py-4 drop-shadow-sm"
       >
         <div className="flex items-center gap-2">
-          <Button className="min-h-8 min-w-8">
+          <Button className="min-h-8 min-w-8" onClick={() => handleLogout()}>
             <LuChevronLeft color="#686A8A" />
           </Button>
           <div className="flex select-none flex-col gap-1">

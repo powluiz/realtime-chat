@@ -2,9 +2,15 @@ import { twMerge } from 'tailwind-merge'
 
 import { IButtonProps } from './types'
 
-const Button = ({ children, disabled, className }: IButtonProps) => {
+const Button = ({
+  children,
+  disabled = false,
+  className,
+  onClick,
+}: IButtonProps) => {
   return (
     <button
+      onClick={onClick}
       data-disabled={disabled}
       disabled={disabled}
       className={twMerge(

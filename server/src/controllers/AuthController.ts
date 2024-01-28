@@ -24,6 +24,6 @@ export class AuthController {
       expiresIn: "1d",
     });
 
-    return res.json({ accessToken });
+    return res.json({ userId: user.id, accessToken: accessToken });
   }
 }
