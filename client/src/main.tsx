@@ -1,7 +1,11 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
+import { AuthProvider } from './contexts/AuthContext'
+import RouteManager from './contexts/RouteManager'
+import { IRouteProps } from './contexts/RouteManager/types'
 import Login from './Pages/Auth/Login'
 import Register from './Pages/Auth/Register'
 import Home from './Pages/Home'
@@ -9,10 +13,11 @@ import NotFound from './Pages/NotFound'
 
 import './index.css'
 
-const appRoutes = [
+const appRoutes: IRouteProps[] = [
   {
     path: '/',
     element: <Home />,
+    protected: true,
   },
   {
     path: '/login',
@@ -28,18 +33,16 @@ const appRoutes = [
   },
 ]
 
+const queryClient = new QueryClient()
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        {appRoutes?.map((route, index) => (
-          <Route
-            key={`app-route-${index}`}
-            path={route?.path}
-            element={route?.element}
-          />
-        ))}
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <RouteManager routes={appRoutes} />
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>,
 )
