@@ -1,6 +1,6 @@
 import { AuthContext } from '@/contexts/AuthContext'
 import defaultBackground from '@assets/default_background.jpg'
-import { useContext } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { BsEmojiSmile, BsThreeDotsVertical } from 'react-icons/bs'
 import { LuChevronLeft } from 'react-icons/lu'
 
@@ -41,6 +41,21 @@ const Chat = () => {
     },
   ]
 
+  const chatContentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const setScrollPosition = (element: HTMLDivElement) => {
+      element.scrollTo({
+        top: element.scrollHeight,
+        behavior: 'smooth',
+      })
+    }
+
+    if (chatContentRef.current) {
+      setScrollPosition(chatContentRef.current)
+    }
+  }, [])
+
   return (
     <div id="chat-window" className="flex h-full flex-col">
       <div
@@ -66,6 +81,7 @@ const Chat = () => {
       </div>
 
       <div
+        ref={chatContentRef}
         className="chat-content-wrapper flex w-full flex-1 justify-center overflow-auto bg-gray-100"
         style={
           backgroundImage
