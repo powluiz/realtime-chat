@@ -6,9 +6,10 @@
   "scripts": {
     "start": "tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only --files src/server.ts",
-    "migrate": "npx prisma migrate dev --schema='./src/prisma/schema.prisma'",
-    "studio": "npx prisma studio --schema='./src/prisma/schema.prisma'"
+    "dev": "ts-node-dev --respawn --transpile-only --files src/server.ts"
+  },
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
