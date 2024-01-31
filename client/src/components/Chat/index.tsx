@@ -1,10 +1,10 @@
 import { AuthContext } from '@/contexts/AuthContext'
 import defaultBackground from '@assets/default_background.jpg'
 import { useContext, useEffect, useRef } from 'react'
-import { BsEmojiSmile, BsThreeDotsVertical } from 'react-icons/bs'
+import { BsThreeDotsVertical } from 'react-icons/bs'
 import { LuChevronLeft } from 'react-icons/lu'
 
-import { Button, MessageBubble } from '..'
+import { Button, ChatFooter, MessageBubble } from '..'
 
 const Chat = () => {
   const { handleLogout } = useContext(AuthContext)
@@ -113,11 +113,7 @@ const Chat = () => {
         </div>
       </div>
 
-      <div id="chat-footer" className="flex h-fit w-full bg-white px-4 py-4">
-        <Button className="h-8 w-8">
-          <BsEmojiSmile size="1.2rem" color="#686A8A" />
-        </Button>
-      </div>
+      <ChatFooter />
     </div>
   )
 }
