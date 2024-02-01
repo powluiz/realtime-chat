@@ -18,6 +18,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
+  "ts-node": { "transpileOnly": true },
   "include": ["src/**/*"],
   "exclude": ["**/*.test.ts"]
 }
