@@ -1,28 +1,50 @@
-import { Server } from "http";
-import WebSocket, { WebSocketServer } from "ws";
+import { Server as HTTPServer } from "http";
+import { Server as SocketIOServer, Socket } from "socket.io";
+import { IncomingMessage } from "./types/Message";
+import { chatController } from "./utils/controllers";
+import { User } from "./types/User";
+import { socketClientMap } from "./utils/sockets";
 
-const onError = (ws: WebSocket, error: Error) => {
+const onError = (error: Error) => {
   console.log("error", error);
-  ws.send(`Connection Error`);
 };
 
-// checar tipagem de data!!!!
-const onMessage = (ws: WebSocket, data: WebSocket.Data) => {
-  console.log(data);
-  ws.send(`Message Received`);
+const onMessage = (socket: Socket, data: string) => {
+  const { senderId, chatId, content }: IncomingMessage = JSON.parse(data);
+  console.log(senderId, chatId, content.image, content.text);
+  // socket.emit("teste", "Message Received");
+  chatController.createMessage(senderId, chatId, content);
 };
 
-const onConnection = (ws: WebSocket) => {
-  ws.on("error", (error) => onError(ws, error));
-  ws.on("message", (data) => onMessage(ws, data));
-  console.log("client connected");
+const onConnection = (socket: Socket) => {
+  let hasReceivedClientId = false;
+
+  socket.emit("findClientId"); // tell the client to send its id
+  socket.once("clientId", (clientId: string) => {
+    if (!clientId) {
+      console.log("clientId is undefined");
+      return;
+    }
+    socketClientMap.set(socket.id, clientId);
+    hasReceivedClientId = true;
+  });
+  // socketClientMap.set(socket.id, { id: "1", name: "Teste" });
+  socket.on("error", (error) => onError(error));
+  socket.on("message", (data) => {
+    if (!hasReceivedClientId) {
+      console.log("Client ID not received yet");
+      return;
+    }
+    onMessage(socket, data);
+  });
+  console.log("websocket client connected");
 };
 
-const appWs = (server: Server) => {
-  const wss = new WebSocketServer({ server });
-  wss.on("connection", onConnection);
-  console.log("Web Socket Server is running");
-  return wss;
+const initWebSocketApp = (server: HTTPServer) => {
+  const io = new SocketIOServer(server);
+  io.on("connection", onConnection);
+  console.log("WebSocket Server is running");
+  return io;
 };
 
-export default appWs;
+export default initWebSocketApp;

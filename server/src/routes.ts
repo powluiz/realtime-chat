@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { AuthController, ChatController, UserController } from "./controllers";
-
-const userController = new UserController();
-const authController = new AuthController();
-const chatController = new ChatController();
+import {
+  authController,
+  chatController,
+  userController,
+} from "./utils/controllers";
 
 export const router = Router();
 
-router.post("/user/login", authController.authenticate);
+router.post("/user/login", authController.login);
 router.post("/user/register", userController.register);
 
 // NEED AUTHENTICATION

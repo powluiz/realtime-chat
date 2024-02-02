@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 export class AuthController {
-  async authenticate(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     const jwtSecret = process.env.JWT_SECRET as string;
     const { email, password } = req.body;
 
