@@ -18,4 +18,3 @@ router.put("/user/update", userController.updateUser);
 router.delete("/user/delete", userController.deleteUser);
 
 router.post("/chat/register", chatController.list);
-router.post("/chat/register", chatController.createChat);

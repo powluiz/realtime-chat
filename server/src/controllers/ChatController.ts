@@ -8,42 +8,44 @@ export class ChatController {
     return res.json(chats);
   }
 
-  async createMessage(req: Request, res: Response) {
-    const { senderId, chatId, content }: IncomingMessage = req.body;
+  async createChat(req: Request, res: Response) {}
 
-    if (!senderId || !chatId || !content) {
-      return res.status(400).json({ error: "Missing fields." });
-    }
+  // async createMessage(req: Request, res: Response) {
+  //   const { senderId, chatId, content }: IncomingMessage = req.body;
 
-    const chat = await prisma.chat.findUnique({
-      where: { id: parseInt(chatId) },
-    });
+  //   if (!senderId || !chatId || !content) {
+  //     return res.status(400).json({ error: "Missing fields." });
+  //   }
 
-    if (!chat) {
-      return res
-        .status(400)
-        .json({ error: `Failed to find chat with id: ${chatId}` });
-    }
+  //   const chat = await prisma.chat.findUnique({
+  //     where: { id: parseInt(chatId) },
+  //   });
 
-    const sender = await prisma.user.findUnique({
-      where: { id: parseInt(senderId) },
-    });
+  //   if (!chat) {
+  //     return res
+  //       .status(400)
+  //       .json({ error: `Failed to find chat with id: ${chatId}` });
+  //   }
 
-    if (!sender) {
-      return res
-        .status(400)
-        .json({ error: `Failed to find user with id: ${senderId}` });
-    }
+  //   const sender = await prisma.user.findUnique({
+  //     where: { id: parseInt(senderId) },
+  //   });
 
-    const message = await prisma.message.create({
-      data: {
-        text: content.text,
-        image: content.image,
-        chat: { connect: { id: chat.id } },
-        sender: { connect: { id: sender.id } },
-      },
-    });
+  //   if (!sender) {
+  //     return res
+  //       .status(400)
+  //       .json({ error: `Failed to find user with id: ${senderId}` });
+  //   }
 
-    return res.status(200).json(message);
-  }
+  //   const message = await prisma.message.create({
+  //     data: {
+  //       text: content.text,
+  //       image: content.image,
+  //       chat: { connect: { id: chat.id } },
+  //       sender: { connect: { id: sender.id } },
+  //     },
+  //   });
+
+  //   return res.status(200).json(message);
+  // }
 }
