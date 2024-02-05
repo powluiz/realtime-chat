@@ -1,4 +1,5 @@
 import { AuthContext } from '@/contexts/AuthContext'
+import { SOCKET_EVENTS } from '@/helpers/constants'
 import { useContext, useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 
@@ -7,14 +8,12 @@ export const socket = io(import.meta.env.VITE_SERVER_WS_URL, {
 })
 
 const useWebSockets = () => {
-  const { authenticated } = useContext(AuthContext)
-  const [isConnected, setIsConnected] = useState(socket.connected)
-  // const [fooEvents, setFooEvents] = useState([])
-
-  console.log(isConnected)
+  const { userId } = useContext(AuthContext)
+  const [isConnected, setIsConnected] = useState<boolean>(socket.connected)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
   useEffect(() => {
-    if (authenticated) {
+    if (userId) {
       socket.connect()
     }
 
@@ -24,23 +23,33 @@ const useWebSockets = () => {
 
     const onDisconnect = () => {
       setIsConnected(false)
+      setIsAuthenticated(false)
+      console.log('Websocket disconnected.')
     }
 
-    // const onFooEvent = value => {
-    //   // setFooEvents(previous => [...previous, value])
-    // }
-
-    socket.on('connect', onConnect)
-    socket.on('disconnect', onDisconnect)
-    // socket.on('foo', onFooEvent)
+    socket.on(SOCKET_EVENTS.CONNECT, onConnect)
+    socket.on(SOCKET_EVENTS.DISCONNECT, onDisconnect)
 
     return () => {
-      socket.off('connect', onConnect)
-      socket.off('disconnect', onDisconnect)
-      // socket.off('foo', onFooEvent)
+      socket.off(SOCKET_EVENTS.CONNECT, onConnect)
+      socket.off(SOCKET_EVENTS.DISCONNECT, onDisconnect)
     }
   }, [])
-  return { isConnected }
+
+  useEffect(() => {
+    if (isConnected && !isAuthenticated) {
+      socket
+        .emit(SOCKET_EVENTS.CLIENT_RECOGNITION, {
+          userId,
+        })
+        .once(SOCKET_EVENTS.CLIENT_RECOGNITION_CONFIRM, () => {
+          console.log('Websocket connection established.')
+          setIsAuthenticated(true)
+        })
+    }
+  }, [isConnected])
+
+  return { isAuthenticated, socket }
 }
 
 export default useWebSockets

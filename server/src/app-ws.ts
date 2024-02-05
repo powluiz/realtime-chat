@@ -1,68 +1,55 @@
 import { Server as HTTPServer } from "http";
 import { Server as SocketIOServer, Socket } from "socket.io";
 import { IncomingMessage } from "./types/Message";
+import {
+  SOCKET_EVENTS,
+  linkSocketToClient,
+  unlinkClientBySocket,
+} from "./utils/sockets";
 
 // map to link socketId to userId: [socketId, userId]
 const socketToClientMap = new Map<string, string>();
 
-const getUserIdBySocketId = (socketId: string) =>
-  socketToClientMap.get(socketId);
-
-const getSocketIdByUserId = (userId: string) =>
-  [...socketToClientMap].find((item) => item[1] === userId)?.[0];
-
-const linkSocketToClient = async (socketId: string, userId: string) => {
-  socketToClientMap.set(socketId, userId);
+const handleChatMessage = (socket: Socket, data: any) => {
+  const { senderId, chatId, content }: IncomingMessage = data;
+  if (!senderId || !chatId || !content) {
+    console.log("Invalid Message Data");
+    socket.emit(SOCKET_EVENTS.CHAT_MESSAGE_INVALID, "Invalid Message Data");
+    return;
+  }
+  console.log(senderId, chatId, content.text, content.image);
 };
 
-const unlinkClientBySocket = async (socketId: string) =>
-  socketToClientMap.delete(socketId);
+const handleClientAuthentication = (socket: Socket, data: any) => {
+  const { id: socketId } = socket;
+  const { userId: clientId } = data;
 
-// const checkClientActiveSocket = async (userId: string) => {
-//   const linkedSocketId = await getSocketIdByUserId(userId);
-//   if (!linkedSocketId) {
-//     linkSocketToClient(linkedSocketId, userId);
-//   }
-//   return linkedSocketId;
-// };
+  if (!clientId) {
+    console.log("clientId was not provided");
+    socket.disconnect();
+    return;
+  }
 
-// /////////////////////////////////////////////////////////////////////
+  socket.emit(SOCKET_EVENTS.CLIENT_RECOGNITION_CONFIRM, "ClientId Received");
+  linkSocketToClient(socketToClientMap, socketId, clientId);
+  console.log(`Client ${clientId} linked to socket ${socketId}`);
+};
 
-const onMessage = (socket: Socket, data: string) => {
-  const { senderId, chatId, content }: IncomingMessage = JSON.parse(data);
-  console.log(senderId, chatId, content.image, content.text);
-  // socket.emit("teste", "Message Received");
+const handleDisconnect = (socket: Socket) => {
+  unlinkClientBySocket(socketToClientMap, socket?.id);
+  console.log("Client Disconnected");
 };
 
 const onConnection = (socket: Socket) => {
-  let hasReceivedClientId = false;
+  socket.once(SOCKET_EVENTS.CLIENT_RECOGNITION, (data) =>
+    handleClientAuthentication(socket, data)
+  );
+  socket.on(SOCKET_EVENTS.CHAT_MESSAGE, (data) =>
+    handleChatMessage(socket, data)
+  );
 
-  socket.emit("clientIdRequest");
-  socket.once("clientIdResponse", (clientId: string) => {
-    if (!clientId) {
-      console.log("clientId is undefined");
-      return;
-    }
-    linkSocketToClient(socket.id, clientId);
-    hasReceivedClientId = true;
-  });
-
-  const handleDisconnect = (socketId: string) => {
-    console.log("Client Disconnected");
-    unlinkClientBySocket(socket.id);
-  };
-
-  socket.on("error", (error) => console.log("error", error));
-  socket.on("disconnect", () => handleDisconnect(socket.id));
-  socket.on("message", (data) => {
-    console.log(data);
-    if (!hasReceivedClientId) {
-      console.log("Client ID not received yet");
-      return;
-    }
-    onMessage(socket, data);
-  });
-  console.log("websocket client connected");
+  socket.on(SOCKET_EVENTS.DISCONNECT, () => handleDisconnect(socket));
+  socket.on(SOCKET_EVENTS.ERROR, (error) => console.log(error));
 };
 
 const initWebSocketApp = (server: HTTPServer) => {
@@ -71,8 +58,9 @@ const initWebSocketApp = (server: HTTPServer) => {
       origin: process.env.CLIENT_PUBLIC_URL,
     },
   });
-  io.on("connect", onConnection);
+  io.on(SOCKET_EVENTS.CONNECT, onConnection);
   console.log("WebSocket Server is running");
+
   return io;
 };
 
