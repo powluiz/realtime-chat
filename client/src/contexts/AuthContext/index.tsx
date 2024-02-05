@@ -10,6 +10,7 @@ export const TOKEN_KEY = 'chatty_client_access_token'
 export const USER_KEY = 'chatty_client_user_id'
 
 export const AuthContext = createContext<IAuthContextData>({
+  userId: null,
   authenticated: false,
   loading: true,
   handleLogin: () => {},
@@ -18,6 +19,7 @@ export const AuthContext = createContext<IAuthContextData>({
 
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
+  const [userId, setUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const navigate = useNavigate()
 
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
     if (!!accessToken && !!userId) {
       setAuthenticated(true)
+      setUserId(userId)
     }
     setLoading(false)
   }, [])
@@ -75,7 +78,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ authenticated, loading, handleLogin, handleLogout }}
+      value={{ userId, authenticated, loading, handleLogin, handleLogout }}
     >
       {children}
     </AuthContext.Provider>

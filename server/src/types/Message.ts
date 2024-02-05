@@ -1,6 +1,6 @@
 export interface MessageContent {
-  text?: string;
-  image?: string;
+  text: string | null;
+  image: string | null;
 }
 
 export interface Message {

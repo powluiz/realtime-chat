@@ -8,6 +8,7 @@ export interface IUserProps {
 }
 
 export interface IAuthContextData {
+  userId: string | null
   authenticated: boolean
   loading: boolean
   handleLogin(email: string, password: string): void
