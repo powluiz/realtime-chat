@@ -2,8 +2,9 @@ import { Button } from '@/components'
 import { BsEmojiSmile } from 'react-icons/bs'
 
 import Input from './parts/Input'
+import { ChatFooterProps } from './types'
 
-const ChatFooter = () => {
+const ChatFooter = ({ onSend }: ChatFooterProps) => {
   return (
     <div
       id="chat-footer"
@@ -12,11 +13,7 @@ const ChatFooter = () => {
       <Button className="h-8 w-8">
         <BsEmojiSmile size="1.2rem" color="#686A8A" />
       </Button>
-      <Input
-        onSubmit={messageData => {
-          console.log(messageData)
-        }}
-      />
+      <Input onSubmit={messageData => onSend(messageData)} />
     </div>
   )
 }

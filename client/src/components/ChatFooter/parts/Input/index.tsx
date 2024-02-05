@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { IInputMessage, IInputProps } from './types'
@@ -8,15 +8,23 @@ const Input = ({ className, onSubmit = () => {} }: IInputProps) => {
     text: '',
   })
 
+  const formRef = useRef<HTMLFormElement>(null)
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setMessageData(previousValue => ({ ...previousValue, text: value }))
   }
 
-  const handleSubmit = () => onSubmit(messageData)
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    onSubmit(messageData)
+    setMessageData({ text: '' })
+    formRef?.current?.reset()
+  }
 
   return (
-    <form className="w-full" onSubmit={handleSubmit}>
+    <form ref={formRef} className="w-full" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Type your message..."

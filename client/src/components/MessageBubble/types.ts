@@ -1,8 +1,10 @@
+import { MessageContent } from '@/DTOs/message'
+import { Contact } from '@/DTOs/user'
+
 export interface IMessageBubbleProps {
-  textualContent?: string
-  isCurrentUser: boolean
+  content: MessageContent
+  sender: Contact
   timestamp: string
-  imageUrl?: string
   isFirstMessageOfGroup: boolean
   onMessageClick?: () => void
   onContextMenu?: () => void
