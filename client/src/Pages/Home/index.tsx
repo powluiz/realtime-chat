@@ -9,7 +9,7 @@ const Home = () => {
   const { userId } = useContext(AuthContext)
 
   if (isAuthenticated) {
-    console.log('sending test message')
+    // console.log('sending test message')
     socket.emit(SOCKET_EVENTS.CHAT_MESSAGE, {
       senderId: userId,
       chatId: '1',
@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div className="h-dvh w-dvw">
-      <Chat />
+      <Chat id={'1'} name={'Nikola Tesla'} participants={[]} />
     </div>
   )
 }
