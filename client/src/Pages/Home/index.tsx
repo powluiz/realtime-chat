@@ -159,7 +159,7 @@ const Home = () => {
 
   return (
     <div className="flex h-dvh w-full overflow-hidden">
-      <div className="flex h-full max-h-svh w-[32rem] max-w-[32rem] flex-col overflow-y-auto pb-20">
+      <div className="flex h-full max-h-svh w-[32rem] max-w-[32rem] flex-col overflow-y-auto pb-9">
         <ChatList
           onSelectChat={chat => {
             setActiveChat(chat) // conferir lógica para obter mensagens daquele chat e setat no activeChat

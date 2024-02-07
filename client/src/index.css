@@ -83,4 +83,17 @@
         0px 50px;
     }
   }
+
+  ::-webkit-scrollbar {
+    width: 13px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 5px solid rgba(0, 0, 0, 0);
+    @apply rounded-md bg-gray-300 bg-clip-padding;
+  }
+
+  .darkerScrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-400;
+  }
 }

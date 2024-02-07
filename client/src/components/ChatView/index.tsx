@@ -150,7 +150,7 @@ const ChatView = ({
 
       <div
         ref={chatContentRef}
-        className="chat-content-wrapper flex w-full flex-1 justify-center overflow-auto bg-gray-100"
+        className="darkerScrollbar chat-content-wrapper flex w-full flex-1 justify-center overflow-auto bg-gray-100"
         style={
           backgroundImage
             ? {
