@@ -12,3 +12,5 @@ export interface Message {
   content: MessageContent
   timestamp: string
 }
+
+export interface OutgoingMessage extends Pick<Message, 'chatId' | 'content'> {}

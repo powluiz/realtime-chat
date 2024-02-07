@@ -1,9 +1,13 @@
-import { Chat, ChatList } from '@/components'
-import { FullChatProps } from '@/components/Chat/types'
+import { ChatView, ChatList, IdleChatView, OptionsBar } from '@/components'
 import { ChatItemProps } from '@/components/ChatList/types'
+import { FullChatProps } from '@/components/ChatView/types'
+import { OptionProps } from '@/components/OptionsBar/types'
+import { AuthContext } from '@/contexts/AuthContext'
 // import { SOCKET_EVENTS } from '@/helpers/constants'
 // import useWebSockets from '@/hooks/useWebSockets'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { IoSettingsOutline } from 'react-icons/io5'
+import { RiLogoutBoxLine } from 'react-icons/ri'
 
 const chats: ChatItemProps[] = [
   {
@@ -51,11 +55,71 @@ const chats: ChatItemProps[] = [
       },
     },
   },
+  {
+    id: '3',
+    name: 'Albert Einstein',
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
+    participants: [],
+    lastMessage: {
+      senderId: '1',
+      senderName: 'Marie Curie',
+      timestamp: '20:35',
+      content: {
+        text: 'Hello, World!',
+      },
+    },
+  },
+  {
+    id: '3',
+    name: 'Albert Einstein',
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
+    participants: [],
+    lastMessage: {
+      senderId: '1',
+      senderName: 'Marie Curie',
+      timestamp: '20:35',
+      content: {
+        text: 'Hello, World!',
+      },
+    },
+  },
+  {
+    id: '3',
+    name: 'Albert Einstein',
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
+    participants: [],
+    lastMessage: {
+      senderId: '1',
+      senderName: 'Marie Curie',
+      timestamp: '20:35',
+      content: {
+        text: 'Hello, World!',
+      },
+    },
+  },
+  {
+    id: '3',
+    name: 'Albert Einstein',
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
+    participants: [],
+    lastMessage: {
+      senderId: '1',
+      senderName: 'Marie Curie',
+      timestamp: '20:35',
+      content: {
+        text: 'Hello, World!',
+      },
+    },
+  },
 ]
 
 const Home = () => {
   // const { isAuthenticated, socket } = useWebSockets()
-  const [activeChat] = useState<FullChatProps>({
+  const [activeChat, setActiveChat] = useState<FullChatProps | null>({
     id: '1',
     name: 'Nikola Tesla',
     participants: [],
@@ -74,10 +138,46 @@ const Home = () => {
   //   })
   // }
 
+  const { handleLogout } = useContext(AuthContext)
+
+  const handleChatReturn = () => {
+    setActiveChat(null)
+  }
+
+  const sidebarOptions: OptionProps[] = [
+    {
+      name: 'Logout',
+      icon: <RiLogoutBoxLine className="text-white" size="1rem" />,
+      action: () => handleLogout(),
+    },
+    {
+      name: 'Logout',
+      icon: <IoSettingsOutline className="text-white" size="1rem" />,
+      action: () => console.log('Settings'),
+    },
+  ]
+
   return (
-    <div className="flex h-dvh w-full">
-      <ChatList chats={chats} />
-      <Chat {...activeChat} />
+    <div className="flex h-dvh w-full overflow-hidden">
+      <div className="flex h-full max-h-svh w-[32rem] max-w-[32rem] flex-col overflow-y-auto pb-20">
+        <ChatList
+          onSelectChat={chat => {
+            setActiveChat(chat) // conferir lógica para obter mensagens daquele chat e setat no activeChat
+            console.log(chat)
+          }}
+          chats={chats}
+        />
+        <OptionsBar className="absolute bottom-0" options={sidebarOptions} />
+      </div>
+      {activeChat ? (
+        <ChatView
+          onSend={data => console.log(data)}
+          onReturn={handleChatReturn}
+          {...activeChat}
+        />
+      ) : (
+        <IdleChatView />
+      )}
     </div>
   )
 }

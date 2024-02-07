@@ -1,7 +1,6 @@
-import { AuthContext } from '@/contexts/AuthContext'
 import { Message, MessageContent } from '@/DTOs/message'
 import defaultBackground from '@assets/default_background.jpg'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { LuChevronLeft } from 'react-icons/lu'
 
@@ -9,12 +8,13 @@ import { Button, ChatFooter, MessageBubble } from '..'
 
 import { FullChatProps } from './types'
 
-const Chat = ({
+const ChatView = ({
   id: chatId,
   name: chatName = 'Chat',
   participants: chatParticipants,
+  onSend = () => {},
+  onReturn = () => {},
 }: FullChatProps) => {
-  const { handleLogout } = useContext(AuthContext)
   const backgroundImage = defaultBackground
   const chatInfo = useMemo(() => {
     return chatParticipants?.length > 2
@@ -106,6 +106,10 @@ const Chat = ({
         timestamp: new Date().toLocaleTimeString().slice(0, 5),
       },
     ])
+    onSend({
+      chatId,
+      content: messageData,
+    })
   }
 
   const chatContentRef = useRef<HTMLDivElement>(null)
@@ -129,7 +133,7 @@ const Chat = ({
         className="flex h-fit w-full flex-row items-center justify-between bg-white px-3 py-4 drop-shadow-sm"
       >
         <div className="flex items-center gap-2">
-          <Button className="min-h-8 min-w-8" onClick={() => handleLogout()}>
+          <Button className="min-h-8 min-w-8" onClick={onReturn}>
             <LuChevronLeft color="#686A8A" />
           </Button>
           <div className="flex select-none flex-col gap-1">
@@ -185,4 +189,4 @@ const Chat = ({
   )
 }
 
-export default Chat
+export default ChatView

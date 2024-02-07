@@ -32,7 +32,7 @@ const ChatItem = ({
   return (
     <div
       className={twMerge(
-        'flex w-full items-center justify-start gap-4 border-b-[1px] border-solid border-neutral-300 bg-white px-6 py-4 hover:bg-neutral-100 active:bg-neutral-200',
+        'flex w-full items-center justify-start gap-4 bg-white px-6 py-4 hover:bg-gray-100 active:bg-gray-200',
         className,
       )}
       onClick={onClick}
@@ -46,14 +46,14 @@ const ChatItem = ({
       )}
 
       <div className="flex w-full flex-col">
-        <h2 className="select-none text-base font-semibold text-neutral-900">
+        <h2 className="select-none text-base font-semibold text-gray-900">
           {name}
         </h2>
         <div className="flex w-full justify-between">
-          <p className="select-none text-sm font-medium text-neutral-400">
+          <p className="select-none text-sm font-normal text-gray-400">
             {messageToDisplay}
           </p>
-          <p className="font-base select-none text-xs text-neutral-400">
+          <p className="font-base select-none text-xs text-gray-400">
             {lastMessage.timestamp}
           </p>
         </div>
