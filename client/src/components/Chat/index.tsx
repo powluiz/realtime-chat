@@ -7,13 +7,13 @@ import { LuChevronLeft } from 'react-icons/lu'
 
 import { Button, ChatFooter, MessageBubble } from '..'
 
-import { ChatProps } from './types'
+import { FullChatProps } from './types'
 
 const Chat = ({
   id: chatId,
   name: chatName = 'Chat',
   participants: chatParticipants,
-}: ChatProps) => {
+}: FullChatProps) => {
   const { handleLogout } = useContext(AuthContext)
   const backgroundImage = defaultBackground
   const chatInfo = useMemo(() => {
@@ -36,7 +36,7 @@ const Chat = ({
       timestamp: '12:00',
     },
     {
-      id: '0',
+      id: '1',
       chatId,
       sender: {
         id: '1',
@@ -49,7 +49,7 @@ const Chat = ({
       timestamp: '12:02',
     },
     {
-      id: '1',
+      id: '2',
       chatId,
       sender: {
         id: '1',
@@ -62,7 +62,7 @@ const Chat = ({
       timestamp: '12:00',
     },
     {
-      id: '0',
+      id: '3',
       chatId,
       sender: {
         id: '2',
@@ -75,7 +75,7 @@ const Chat = ({
       timestamp: '12:02',
     },
     {
-      id: '0',
+      id: '4',
       chatId,
       sender: {
         id: '2',
@@ -123,7 +123,7 @@ const Chat = ({
   }, [messages])
 
   return (
-    <div id="chat-window" className="flex h-full flex-col">
+    <div id="chat-window" className="flex h-full w-full flex-col">
       <div
         id="chat-header"
         className="flex h-fit w-full flex-row items-center justify-between bg-white px-3 py-4 drop-shadow-sm"

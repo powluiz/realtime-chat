@@ -6,7 +6,7 @@ import { IMessageBubbleProps } from './types'
 const Message = ({
   content,
   sender,
-  timestamp,
+  // timestamp,
   onMessageClick,
   onContextMenu,
   isFirstMessageOfGroup,
@@ -35,7 +35,7 @@ const Message = ({
               className="h-48 w-full select-none rounded-md object-cover data-[has-text=true]:mb-3"
             />
           )}
-          <p className="text-sm font-medium text-neutral-darker">
+          <p className="text-sm font-normal text-neutral-darker">
             {content?.text}
           </p>
         </div>
