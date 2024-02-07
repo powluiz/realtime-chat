@@ -124,8 +124,6 @@ const Home = () => {
     name: 'Nikola Tesla',
     participants: [],
     messages: [],
-    image:
-      'https://cc-prod.scene7.com/is/image/CCProdAuthor/FF-SEO-text-to-image-marquee-mobile-2x?$pjpeg$&jpegSize=100&wid=600',
   })
 
   // if (isAuthenticated) {
