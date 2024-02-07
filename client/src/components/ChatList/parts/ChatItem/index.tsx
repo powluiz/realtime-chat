@@ -1,3 +1,4 @@
+import { Avatar } from '@/components'
 import { AuthContext } from '@/contexts/AuthContext'
 import { useContext, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -37,13 +38,7 @@ const ChatItem = ({
       )}
       onClick={onClick}
     >
-      {!!image && (
-        <img
-          className="pointer-events-none flex aspect-square h-[3.25rem] flex-shrink-0 select-none overflow-hidden rounded-full object-cover"
-          src={image}
-          alt="chat-image"
-        />
-      )}
+      <Avatar src={image} alt="chat-item-image" />
 
       <div className="flex w-full flex-col">
         <h2 className="select-none text-base font-semibold text-gray-900">

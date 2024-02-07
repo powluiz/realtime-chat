@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { LuChevronLeft } from 'react-icons/lu'
 
-import { Button, ChatFooter, MessageBubble } from '..'
+import { Avatar, Button, ChatFooter, MessageBubble } from '..'
 
 import { FullChatProps } from './types'
 
@@ -12,6 +12,7 @@ const ChatView = ({
   id: chatId,
   name: chatName = 'Chat',
   participants: chatParticipants,
+  image: chatImage = '',
   onSend = () => {},
   onReturn = () => {},
 }: FullChatProps) => {
@@ -136,6 +137,7 @@ const ChatView = ({
           <Button className="min-h-8 min-w-8" onClick={onReturn}>
             <LuChevronLeft color="#686A8A" />
           </Button>
+          <Avatar src={chatImage} alt="chat-image" />
           <div className="flex select-none flex-col gap-1">
             <h2 className="text-base font-medium leading-4 text-neutral-darker">
               {chatName}
