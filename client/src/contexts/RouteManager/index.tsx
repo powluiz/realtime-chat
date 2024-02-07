@@ -5,9 +5,9 @@ import { AuthContext } from '../AuthContext'
 import { IProtectedRouteProps, IRouteManagerProps } from './types'
 
 const ProtectedRoute = ({ routeElement }: IProtectedRouteProps) => {
-  const { authenticated } = useContext(AuthContext)
+  const { authenticated, loading } = useContext(AuthContext)
 
-  if (!authenticated) {
+  if (!loading && !authenticated) {
     return <Navigate to={'/login'} replace />
   }
   return routeElement
