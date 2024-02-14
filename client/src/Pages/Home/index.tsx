@@ -3,119 +3,13 @@ import { ChatItemProps } from '@/components/ChatList/types'
 import { FullChatProps } from '@/components/ChatView/types'
 import { OptionProps } from '@/components/OptionsBar/types'
 import { AuthContext } from '@/contexts/AuthContext'
-// import { SOCKET_EVENTS } from '@/helpers/constants'
+import { Message, OutgoingMessage } from '@/DTOs/message'
+import { mockChats as chats, fullChats } from '@/mocks'
+// import { SOCKET_EVENTS } from '@/utils/constants'
 // import useWebSockets from '@/hooks/useWebSockets'
 import { useContext, useState } from 'react'
 import { IoSettingsOutline } from 'react-icons/io5'
 import { RiLogoutBoxLine } from 'react-icons/ri'
-
-const chats: ChatItemProps[] = [
-  {
-    id: '1',
-    name: 'Nikola Tesla',
-    image:
-      'https://s2-techtudo.glbimg.com/SSAPhiaAy_zLTOu3Tr3ZKu2H5vg=/0x0:1024x609/888x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2022/c/u/15eppqSmeTdHkoAKM0Uw/dall-e-2.jpg',
-    participants: [],
-    lastMessage: {
-      senderId: '1',
-      senderName: 'Nikola Tesla',
-      timestamp: '20:35',
-      content: {
-        text: 'Hello, World!',
-      },
-    },
-  },
-  {
-    id: '2',
-    name: 'Marie Curie',
-    image:
-      'https://s2-techtudo.glbimg.com/L9wb1xt7tjjL-Ocvos-Ju0tVmfc=/0x0:1200x800/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2023/q/l/TIdfl2SA6J16XZAy56Mw/canvaai.png',
-    participants: [],
-    lastMessage: {
-      senderId: '1',
-      senderName: 'Marie Curie',
-      timestamp: '20:35',
-      content: {
-        text: 'Hello, World!',
-      },
-    },
-  },
-  {
-    id: '3',
-    name: 'Albert Einstein',
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
-    participants: [],
-    lastMessage: {
-      senderId: '1',
-      senderName: 'Marie Curie',
-      timestamp: '20:35',
-      content: {
-        text: 'Hello, World!',
-      },
-    },
-  },
-  {
-    id: '3',
-    name: 'Albert Einstein',
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
-    participants: [],
-    lastMessage: {
-      senderId: '1',
-      senderName: 'Marie Curie',
-      timestamp: '20:35',
-      content: {
-        text: 'Hello, World!',
-      },
-    },
-  },
-  {
-    id: '3',
-    name: 'Albert Einstein',
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
-    participants: [],
-    lastMessage: {
-      senderId: '1',
-      senderName: 'Marie Curie',
-      timestamp: '20:35',
-      content: {
-        text: 'Hello, World!',
-      },
-    },
-  },
-  {
-    id: '3',
-    name: 'Albert Einstein',
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
-    participants: [],
-    lastMessage: {
-      senderId: '1',
-      senderName: 'Marie Curie',
-      timestamp: '20:35',
-      content: {
-        text: 'Hello, World!',
-      },
-    },
-  },
-  {
-    id: '3',
-    name: 'Albert Einstein',
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcpGPvLASQo5V70o1NFNd2PkS3QhdOOx_YugJSXbkOcQ&s',
-    participants: [],
-    lastMessage: {
-      senderId: '1',
-      senderName: 'Marie Curie',
-      timestamp: '20:35',
-      content: {
-        text: 'Hello, World!',
-      },
-    },
-  },
-]
 
 const Home = () => {
   // const { isAuthenticated, socket } = useWebSockets()
@@ -137,6 +31,36 @@ const Home = () => {
   //     },
   //   })
   // }
+
+  const handleChangeActiveChat = (chat: ChatItemProps) => {
+    const newChat = fullChats.find(c => c.id === chat.id)
+    setActiveChat(newChat || null)
+  }
+
+  // this simulates incoming messages from the server
+  const [messages, setMessages] = useState<Message[]>([])
+
+  const handleSendMessage = (message: OutgoingMessage) => {
+    const newMessage = {
+      id: '0',
+      chatId: message.chatId,
+      sender: {
+        id: '2',
+        username: 'John Doe',
+        avatar: '',
+      },
+      content: message.content,
+      timestamp: new Date().toLocaleTimeString().slice(0, 5),
+    }
+
+    // simulating server response:
+
+    const currentChat = fullChats.find(c => c.id === message.chatId)
+    if (currentChat) {
+      currentChat.messages.push(newMessage)
+      setMessages([...currentChat.messages])
+    }
+  }
 
   const { handleLogout } = useContext(AuthContext)
 
@@ -161,19 +85,17 @@ const Home = () => {
     <div className="flex h-dvh w-full overflow-hidden">
       <div className="flex h-full max-h-svh w-[32rem] max-w-[32rem] flex-col overflow-y-auto pb-9">
         <ChatList
-          onSelectChat={chat => {
-            setActiveChat(chat) // conferir lógica para obter mensagens daquele chat e setat no activeChat
-            console.log(chat)
-          }}
+          onSelectChat={chat => handleChangeActiveChat(chat)}
           chats={chats}
         />
         <OptionsBar className="absolute bottom-0" options={sidebarOptions} />
       </div>
       {activeChat ? (
         <ChatView
-          onSend={data => console.log(data)}
-          onReturn={handleChatReturn}
           {...activeChat}
+          messages={messages}
+          onSend={handleSendMessage}
+          onReturn={handleChatReturn}
         />
       ) : (
         <IdleChatView />
