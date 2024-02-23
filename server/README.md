@@ -1,19 +1,17 @@
+## How to Run
+
+You will need Node.js and Docker installed on your machine.
+
 ```bash
-# init prisma with config files
-npx prisma init
+# create .env file based on .env.example
+cp .env.example .env
+```
 
-# To create a new migration with the sql queries (based in schema.prisma)
+```bash
+npm i
+docker compose up -d
 npx prisma migrate dev
-
-# To see the database
-npx prisma studio
-
-# pull info from existing database to schema.prisma (useful when working with old databases)
-npx prisma db pull
-
-# After updating schema.prisma (only in dev mode):
-npx prisma generate
-npx prisma db push
+npm run dev
 ```
 
 - [AWS S3](https://aws.amazon.com/pt/free/storage/s3/)

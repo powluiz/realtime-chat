@@ -6,17 +6,19 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
-  name             String
-  email            String    @unique
-  password         String
-  avatar           String
-  chats            Chat[]
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  avatar   String
+  chats    Chat[]
+
+  // prisma relations - Not present in the final database
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
 }
@@ -36,7 +38,9 @@ model Message {
   senderId   Int
   receiverId Int
   chatId     Int
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  chat       Chat     @relation(fields: [chatId], references: [id])
+
+  // prisma relations - Not present in the final database
+  sender   User @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  chat     Chat @relation(fields: [chatId], references: [id])
 }
