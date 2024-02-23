@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
 import bcrypt from "bcryptjs";
+import { z } from "zod";
 
 export class UserController {
   async list(_: Request, res: Response) {
@@ -9,7 +10,13 @@ export class UserController {
   }
 
   async register(req: Request, res: Response) {
-    const { name, email, password } = req.body;
+    const requestBody = z.object({
+      name: z.string(),
+      email: z.string().email(),
+      password: z.string(),
+    });
+
+    const { name, email, password } = requestBody.parse(req.body);
 
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Missing fields." });
@@ -41,7 +48,11 @@ export class UserController {
   }
 
   async getMe(req: Request, res: Response) {
-    const { userId } = req.body;
+    const requestBody = z.object({
+      userId: z.string(),
+    });
+
+    const { userId } = requestBody.parse(req.body);
 
     if (!userId) {
       return res.status(400).json({ error: "Missing userId." });
@@ -68,7 +79,14 @@ export class UserController {
   }
 
   async updateUser(req: Request, res: Response) {
-    const { userId, name, email, avatar } = req.body;
+    const requestBody = z.object({
+      userId: z.string(),
+      name: z.string(),
+      email: z.string().email(),
+      avatar: z.string(),
+    });
+
+    const { userId, name, email, avatar } = requestBody.parse(req.body);
 
     if (!userId) {
       return res.status(400).json({ error: "Missing userId." });
@@ -104,7 +122,11 @@ export class UserController {
   }
 
   async deleteUser(req: Request, res: Response) {
-    const { userId } = req.body;
+    const requestBody = z.object({
+      userId: z.string(),
+    });
+
+    const { userId } = requestBody.parse(req.body);
 
     if (!userId) {
       return res.status(400).json({ error: "Missing userId." });
